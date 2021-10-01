@@ -1,0 +1,11 @@
+<template>
+    <lightning-combobox 
+        placeholder="Select Account name"
+        name="accName"
+        label="Account Name"
+        value={value}
+        options={accountNamesOptions}
+        onchange={handleChange}>
+    </lightning-combobox>
+    <p>Selected name is: {value}</p>
+</template>
