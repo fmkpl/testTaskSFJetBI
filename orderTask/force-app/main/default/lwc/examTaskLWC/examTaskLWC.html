@@ -3,9 +3,18 @@
         placeholder="Select Account name"
         name="accName"
         label="Account Name"
-        value={value}
+        value={valueName}
         options={accountNamesOptions}
         onchange={handleChange}>
     </lightning-combobox>
-    <p>Selected name is: {value}</p>
+    <p>Selected name is: {accountName}</p>
+    <lightning-combobox
+        placeholder="Select month of Payment Due date"
+        name="monthName"
+        label="Month of Payment Due Date"
+        value={valueMonth}
+        options={monthNamesOptions}
+        onchange={handleChangeMonth}>
+    </lightning-combobox>
+    <p>Selected name is: {valueMonth}</p>
 </template>

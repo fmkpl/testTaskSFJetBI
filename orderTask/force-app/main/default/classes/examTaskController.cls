@@ -3,7 +3,7 @@ public with sharing class examTaskController {
     public static List<String> getAllAccountNamesWithOrders() {
         Set<String> accountNamesSet = new Set<String>();
 
-        for(Order__c ord : [select Name, Account__r.Name from Order__c]) {
+        for(Order__c ord : [select Name, Account__r.Name from Order__c where Account__c != null]) {
             accountNamesSet.add(ord.Account__r.Name);
         }
 
@@ -11,11 +11,11 @@ public with sharing class examTaskController {
         return accountNames;
     }
 
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<String> getAllMonthsOfPaymentDueDate(String accountName) {
         Set<Integer> orderMonthsSet = new Set<Integer>();
 
-        for(Order__c ord : [select Payment_Due_date__c from Order__c where Account__r.Name =: accountName ]) {
+        for(Order__c ord : [select Payment_Due_date__c from Order__c where Account__r.Name = :accountName]) {
             orderMonthsSet.add(ord.Payment_Due_date__c.month());
         }
 
