@@ -1,9 +1,11 @@
 import { LightningElement, wire, track } from 'lwc';
 import getAllAccountNamesWithOrders from '@salesforce/apex/examTaskController.getAllAccountNamesWithOrders';
 import getAllMonthsOfPaymentDueDate from '@salesforce/apex/examTaskController.getAllMonthsOfPaymentDueDate';
+import getOrders from '@salesforce/apex/examTaskController.getOrders';
 let i = 0;
 
 export default class ExamTaskLWC extends LightningElement {
+    //VARIABLES
     accountName = '';
     valueMonth = '';
 
@@ -13,6 +15,20 @@ export default class ExamTaskLWC extends LightningElement {
     @track errorMonths;
     @track monthNames = [];
 
+    @track orders = [];
+    @track errorOrders;
+    @track columns = [
+        {
+            label: 'Order name',
+            fieldName: 'nameUrl',
+            type: 'url',
+            typeAttributes: {label: { fieldName: 'Name' }, 
+            target: '_blank'},
+            sortable: true
+        }
+    ];
+
+    //GET ACCOUNT NAMES
     get accountNamesOptions() {
         return this.accNames;
     }
@@ -35,6 +51,7 @@ export default class ExamTaskLWC extends LightningElement {
         this.accountName = event.detail.value;
     }
 
+    //GET MONTHS FROM ORDERS RELATED TO ACCOUNTS
     get monthNamesOptions() {
         return this.monthNames;
     }
@@ -55,5 +72,23 @@ export default class ExamTaskLWC extends LightningElement {
 
     handleChangeMonth(event) {
         this.valueMonth = event.detail.value;
+    }
+
+    //GET ORDER RECORDS
+    @wire(getOrders, { accountName: '$accountName', valueMonth: '$valueMonth' })
+    wiredOpps(result) {
+        const { data, error } = result;
+        if(data) {
+            let nameUrl;
+            this.orders = data.map(row => { 
+                nameUrl = `/${row.Id}`;
+                return {...row , nameUrl} 
+            })
+            this.errorOrders = null;
+        }
+        if(error) {
+            this.errorOrders = error;
+            this.orders = [];
+        }
     }
 }

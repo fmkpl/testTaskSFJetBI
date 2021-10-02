@@ -65,4 +65,57 @@ public with sharing class examTaskController {
         System.debug(orderMonths);
         return orderMonths;
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Order__c> getOrders(String accountName, String valueMonth) {
+        Integer checkMonth = 0;
+        switch on valueMonth {
+            when 'January' {
+                checkMonth = 1;
+            }
+            when 'February' {
+                checkMonth = 2;
+            }
+            when 'March' {
+                checkMonth = 3;
+            }
+            when 'April' {
+                checkMonth = 4;
+            }
+            when 'May' {
+                checkMonth = 5;
+            }
+            when 'June' {
+                checkMonth = 6;
+            }
+            when 'July' {
+                checkMonth = 7;
+            }
+            when 'August' {
+                checkMonth = 8;
+            }
+            when 'September' {
+                checkMonth = 9;
+            }
+            when 'October' {
+                checkMonth = 10;
+            }
+            when 'November' {
+                checkMonth = 11;
+            }
+            when 'December' {
+                checkMonth = 12;
+            }
+        }
+
+        List<Order__c> ordersList = new List<Order__c>();
+
+        for(Order__c ord : [select Id, Name, Payment_Due_date__c from Order__c where Account__r.Name = :accountName]) {
+            if(ord.Payment_Due_date__c.month() == checkMonth) {
+                ordersList.add(ord);
+            }
+        }
+
+        return ordersList;
+    }
 }
