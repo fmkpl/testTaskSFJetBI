@@ -69,6 +69,7 @@ public with sharing class examTaskController {
     @AuraEnabled(cacheable=true)
     public static List<Order__c> getOrders(String accountName, String valueMonth) {
         Integer checkMonth = 0;
+        
         switch on valueMonth {
             when 'January' {
                 checkMonth = 1;
