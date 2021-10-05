@@ -62,7 +62,6 @@ public with sharing class examTaskController {
             }
         }
         
-        System.debug(orderMonths);
         return orderMonths;
     }
 
