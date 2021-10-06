@@ -118,4 +118,9 @@ public with sharing class examTaskController {
 
         return ordersList;
     }
+
+    @AuraEnabled(cacheable=true)
+    public static String getEmailOfCurrentUser() {
+        return UserInfo.getUserEmail();
+    }
 }

@@ -5,19 +5,28 @@
         <div class="slds-m-top_medium slds-m-bottom_x-large">
             <div class="slds-p-horizontal_medium">
                 <h2 class="slds-text-heading_medium slds-m-bottom_medium">
-                    An email input field with an invalid value.
+                    Type an email if you don't want to send information about this order to current user's email. If field is empty, informaton will send to current user's email.
                 </h2>
             </div>
 
             <div class="slds-p-around_medium lgc-bg">
-                <lightning-input type="email" 
+                <lightning-input type="email"
+                                class="emailInput" 
                                 label="Email address" 
-                                value="alpha-not-valid"
-                                onchange={onChangeEmail}></lightning-input>
+                                placeholder="Type here..."
+                                onchange={onChangeEmail}
+                                minlength="5"
+                                max-length="50"
+                                message-when-too-long="Your email address must not be more than 50 characters."
+                                message-when-too-short="Your email address must be more 5 characters."></lightning-input>
             </div>
+            <p>{email}</p>
         </div>
         <div slot="footer">
-            <lightning-button label="Send email" variant="brand"></lightning-button>
+            <lightning-button label="Send email" 
+                            class="sendEmailButton"
+                            variant="brand" 
+                            disabled={disabledFlag}></lightning-button>
         </div>
     </lightning-card>
 </template>
