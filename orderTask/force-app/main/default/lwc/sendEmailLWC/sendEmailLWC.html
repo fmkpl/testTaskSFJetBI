@@ -20,13 +20,13 @@
                                 message-when-too-long="Your email address must not be more than 50 characters."
                                 message-when-too-short="Your email address must be more 5 characters."></lightning-input>
             </div>
-            <p>{email}</p>
         </div>
         <div slot="footer">
             <lightning-button label="Send email" 
                             class="sendEmailButton"
                             variant="brand" 
-                            disabled={disabledFlag}></lightning-button>
+                            disabled={disabledFlag}
+                            onclick={sendEmailFunc}></lightning-button>
         </div>
     </lightning-card>
 </template>
