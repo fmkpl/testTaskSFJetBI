@@ -1,32 +1,7 @@
 <template>
-    <lightning-card variant="narrow"
-                    icon-name="standard:email">
-        <h1 slot="title">Sending info email</h1>
-        <div class="slds-m-top_medium slds-m-bottom_x-large">
-            <div class="slds-p-horizontal_medium">
-                <h2 class="slds-text-heading_medium slds-m-bottom_medium">
-                    Type an email if you don't want to send information about this order to current user's email. If field is empty, informaton will send to current user's email.
-                </h2>
-            </div>
-
-            <div class="slds-p-around_medium lgc-bg">
-                <lightning-input type="email"
-                                class="emailInput" 
-                                label="Email address" 
-                                placeholder="Type here..."
-                                onchange={onChangeEmail}
-                                minlength="5"
-                                max-length="50"
-                                message-when-too-long="Your email address must not be more than 50 characters."
-                                message-when-too-short="Your email address must be more 5 characters."></lightning-input>
-            </div>
-        </div>
-        <div slot="footer">
-            <lightning-button label="Send email" 
-                            class="sendEmailButton"
-                            variant="brand" 
-                            disabled={disabledFlag}
-                            onclick={sendEmailFunc}></lightning-button>
-        </div>
+    <lightning-card>
+        <lightning-button label="Send email"
+                        variant="brand"
+                        onclick={sendEmailFunc}></lightning-button>
     </lightning-card>
 </template>

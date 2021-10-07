@@ -127,39 +127,36 @@ public with sharing class examTaskController {
         }
     }
 
-    @AuraEnabled(cacheable=true)
-    public static String getEmailOfCurrentUser() {        
-        String emailToReturn = UserInfo.getUserEmail();
-        return emailToReturn;
-    }
-
     @AuraEnabled
-    public static void sendEmailWithoutTemplate(String email) {
+    public static void sendEmailWithoutTemplate(String recordId) {
         List<Messaging.SingleEmailMessage> mailList = new List<Messaging.SingleEmailMessage>();
 
-        EmailTemplate emailTemp = [select Id, Subject, Body, Name from EmailTemplate where Name = 'Order Info (Exam Task)'];
+        //EmailTemplate emailTemp = [select Id, Subject, Body, Name from EmailTemplate where Name = 'Order Info (Exam Task)'];
 
-        User user = [select Id, Email from User where Name = 'Efim Kopyl'];
+        Order__c order = [select Id, 
+                                Account__r.Name,
+                                Total_Amount__c,
+                                Payment_Due_date__c from Order__c where Id = :recordId];
 
         String[] toAddresses = new String[]{'testemail@example.com'};
 
-        if(email == '') {
-            toAddresses[0] = user.Email;
-        } else {
-            toAddresses[0] = email;
-        }
+        toAddresses[0] = UserInfo.getUserEmail();
 
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        //mail.setSubject('Testing email sending'); // without template
-        //mail.setPlainTextBody('Welcome to JetBI!');
-        //mail.setToAddresses(toAddresses);
-        //mailList.add(mail);
-
-
-        mail.setSaveAsActivity(false);
-        mail.setTemplateId(emailTemp.Id);
-        mail.setTargetObjectId(user.Id);
+        mail.setSubject('Order information'); // without template
+        mail.setPlainTextBody('Account: ' + order.Account__r.Name + 
+                                ', Payment Due Date: ' +
+                                order.Payment_Due_date__c +
+                                ', Total sum: $' +
+                                order.Total_Amount__c);
+        mail.setToAddresses(toAddresses);
         mailList.add(mail);
+
+
+        //mail.setSaveAsActivity(false);    // with template
+        //mail.setTemplateId(emailTemp.Id);
+        //mail.setTargetObjectId(user.Id);
+        //mailList.add(mail);
 
         if(!mailList.isEmpty()) {
             Messaging.sendEmail(mailList);

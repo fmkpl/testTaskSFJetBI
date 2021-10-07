@@ -142,15 +142,4 @@ public with sharing class examTaskControllerTest {
 
         System.assert(testMap.size() == ordList.size(), 'They are not equals');
     }
-
-    @IsTest
-    public static void getEmailOfCurrentUserTestPositive() {
-        String userEmail = UserInfo.getUserEmail();
-
-        Test.startTest();
-        String testEmail = examTaskController.getEmailOfCurrentUser();
-        Test.stopTest();
-        
-        System.assert(userEmail == testEmail, 'They are not equals');
-    }
 }
