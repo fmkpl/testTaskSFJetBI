@@ -115,7 +115,7 @@ public with sharing class examTaskController {
 
             List<Order__c> ordersList = new List<Order__c>();
 
-            for(Order__c ord : [select Id, Name, Payment_Due_date__c from Order__c where Account__r.Name = :accountName]) {
+            for(Order__c ord : [select Id, Name, Payment_Due_date__c, Total_Amount__c, Account__c from Order__c where Account__r.Name = :accountName]) {
                 if(ord.Payment_Due_date__c.month() == checkMonth) {
                     ordersList.add(ord);
                 }
