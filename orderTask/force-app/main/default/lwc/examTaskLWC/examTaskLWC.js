@@ -25,6 +25,14 @@ export default class ExamTaskLWC extends LightningElement {
             typeAttributes: {label: { fieldName: 'Name' }, 
             target: '_blank'},
             sortable: true
+        },
+        {
+            label: 'Payment Due Date',
+            fieldName: 'Payment_Due_date__c'
+        },
+        {
+            label: 'Total sum, $',
+            fieldName: 'Total_Amount__c'
         }
     ];
 
@@ -80,6 +88,7 @@ export default class ExamTaskLWC extends LightningElement {
         const { data, error } = result;
         if(data) {
             let nameUrl;
+            this.ordersForRecordView = data;
             this.orders = data.map(row => { 
                 nameUrl = `/${row.Id}`;
                 return {...row , nameUrl} 
