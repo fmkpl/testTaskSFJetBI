@@ -33,13 +33,11 @@ public with sharing class ExamTaskControllerTest {
             accountNamesSet.add(ord.Account__r.Name);
         }
 
-        List<String> accountNames = new List<String>(accountNamesSet);
-
         Test.startTest();
         List<String> testList = ExamTaskController.getAllAccountNamesWithOrders();
         Test.stopTest();
 
-        System.assert(accountNames.size() == testList.size(), 'They are not equals');
+        System.assert(accountNamesSet.size() == testList.size(), 'They are not equals');
     }
 
     @isTest
@@ -101,19 +99,19 @@ public with sharing class ExamTaskControllerTest {
 
     @IsTest
     public static void getOrdersTestPositive() {
-        List<String> months = new List<String>();
-        months.add('January');
-        months.add('February');
-        months.add('March');
-        months.add('April');
-        months.add('May');
-        months.add('June');
-        months.add('July');
-        months.add('August');
-        months.add('September');
-        months.add('October');
-        months.add('November');
-        months.add('December');
+        List<String> months = new List<String> { 'January',
+                                                'February',
+                                                'March',
+                                                'April',
+                                                'May',
+                                                'June',
+                                                'July',
+                                                'August',
+                                                'September',
+                                                'October',
+                                                'November',
+                                                'December' };
+
         List<Order__c> ordList = new List<Order__c>();
 
         for (Order__c ord : [select Id, Name, Payment_Due_date__c from Order__c where Account__r.Name = 'TestAcct0']) {

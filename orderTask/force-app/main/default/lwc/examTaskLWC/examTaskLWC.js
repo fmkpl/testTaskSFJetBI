@@ -9,10 +9,10 @@ export default class ExamTaskLWC extends LightningElement {
     accountName = '';
     valueMonth = '';
 
-    @track errorNames;
+    @track errorAccNames;
     @track accNames = [];
 
-    @track errorMonths;
+    @track errorMonthsNames;
     @track monthNames = [];
 
     @track orders = [];
@@ -50,7 +50,7 @@ export default class ExamTaskLWC extends LightningElement {
             }
             error = undefined;
         } else if(error) {
-            this.errorNames = error;
+            this.errorAccNames = error;
             this.accNames = undefined;
         }
     }
@@ -73,7 +73,7 @@ export default class ExamTaskLWC extends LightningElement {
             }
             error = undefined;
         } else if(error) {
-            this.errorMonths = error;
+            this.errorMonthsNames = error;
             this.monthNames = undefined;
         }
     }
