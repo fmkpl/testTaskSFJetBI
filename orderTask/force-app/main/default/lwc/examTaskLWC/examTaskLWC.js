@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
-import getAllAccountNamesWithOrders from '@salesforce/apex/examTaskController.getAllAccountNamesWithOrders';
-import getAllMonthsOfPaymentDueDate from '@salesforce/apex/examTaskController.getAllMonthsOfPaymentDueDate';
-import getOrders from '@salesforce/apex/examTaskController.getOrders';
+import getAllAccountNamesWithOrders from '@salesforce/apex/ExamTaskController.getAllAccountNamesWithOrders';
+import getAllMonthsOfPaymentDueDate from '@salesforce/apex/ExamTaskController.getAllMonthsOfPaymentDueDate';
+import getOrders from '@salesforce/apex/ExamTaskController.getOrders';
 let i = 0;
 
 export default class ExamTaskLWC extends LightningElement {
