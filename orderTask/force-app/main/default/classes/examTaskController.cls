@@ -1,4 +1,4 @@
-public with sharing class examTaskController {
+public with sharing class ExamTaskController {
     @AuraEnabled(cacheable=true)
     public static List<String> getAllAccountNamesWithOrders() {
         Set<String> accountNamesSet = new Set<String>();

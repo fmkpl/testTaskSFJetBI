@@ -1,5 +1,5 @@
 @isTest
-public with sharing class examTaskControllerTest {
+public with sharing class ExamTaskControllerTest {
     @TestSetup
     static void makeData() {
         List<Account> testAccts = new List<Account>();
@@ -36,7 +36,7 @@ public with sharing class examTaskControllerTest {
         List<String> accountNames = new List<String>(accountNamesSet);
 
         Test.startTest();
-        List<String> testList = examTaskController.getAllAccountNamesWithOrders();
+        List<String> testList = ExamTaskController.getAllAccountNamesWithOrders();
         Test.stopTest();
 
         System.assert(accountNames.size() == testList.size(), 'They are not equals');
@@ -93,7 +93,7 @@ public with sharing class examTaskControllerTest {
             }
         }
         Test.startTest();
-        List<String> testList = examTaskController.getAllMonthsOfPaymentDueDate('TestAcct0');
+        List<String> testList = ExamTaskController.getAllMonthsOfPaymentDueDate('TestAcct0');
         Test.stopTest();
 
         System.assert(testList.size() == orderMonths.size(), 'They are not equals');
@@ -136,7 +136,7 @@ public with sharing class examTaskControllerTest {
         Map<Integer, List<Order__c>> testMap = new Map<Integer, List<Order__c>>();
         Test.startTest();
         for(Integer i = 0; i < ordList.size(); i++) {
-            testMap.put(i + 1, examTaskController.getOrders('TestAcct0', months[i]));
+            testMap.put(i + 1, ExamTaskController.getOrders('TestAcct0', months[i]));
         }
         Test.stopTest();
 
@@ -164,7 +164,7 @@ public with sharing class examTaskControllerTest {
         mailList.add(mail);
 
         Test.startTest();
-        examTaskController.sendEmailWithoutTemplate(order.Id);
+        ExamTaskController.sendEmailWithoutTemplate(order.Id);
         Test.stopTest();
 
         System.assert(!mailList.isEmpty(), 'Email not sent');
