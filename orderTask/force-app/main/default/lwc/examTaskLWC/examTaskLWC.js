@@ -88,7 +88,6 @@ export default class ExamTaskLWC extends LightningElement {
         const { data, error } = result;
         if(data) {
             let nameUrl;
-            this.ordersForRecordView = data;
             this.orders = data.map(row => { 
                 nameUrl = `/${row.Id}`;
                 return {...row , nameUrl} 
