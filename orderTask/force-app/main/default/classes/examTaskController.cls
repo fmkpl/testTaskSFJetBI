@@ -145,11 +145,20 @@ public with sharing class ExamTaskController {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setSubject('Order information'); // without template
         mail.setToAddresses(toAddresses);
-        mail.setHtmlBody('<div style="text-align: center;"><img alt="JetBI_RED_2018" src="https://mindful-raccoon-838otp-dev-ed--c.documentforce.com/file-asset-public/JetBI_RED_2018?oid=00D5g000004h8qc" style="max-width: 385.308px; width: 234.3px; height: 92px;" title="JetBI_RED_2018" /><br />&nbsp;</div>' + 
-        '<div style="text-align: center;"><span style="font-size:18px;"><span style="font-family:Franklin Gothic,Arial,Helvetica,sans-serif;">---Order information---<br /><br />' + 
-        'Account: ' + order.Account__r.Name + '<br />' +
-        'Payment Due Date: ' + order.Payment_Due_date__c + '<br />' +
-        'Total sum: $' + order.Total_Amount__c + '</span></span></div>');
+        mail.setHtmlBody('<div style="text-align: center;">' +
+                            '<img alt="JetBI_RED_2018" src="https://mindful-raccoon-838otp-dev-ed--c.documentforce.com/file-asset-public/JetBI_RED_2018?oid=00D5g000004h8qc" style="max-width: 385.308px; width: 234.3px; height: 92px;" title="JetBI_RED_2018" />' + 
+                            '<br />&nbsp;' + 
+                        '</div>' + 
+                        '<div style="text-align: center;">' + 
+                            '<span style="font-size:18px;">' + 
+                                '<span style="font-family:Franklin Gothic,Arial,Helvetica,sans-serif;">' + 
+                                    '---Order information---<br /><br />' + 
+                                    'Account: ' + order.Account__r.Name + '<br />' +
+                                    'Payment Due Date: ' + order.Payment_Due_date__c + '<br />' +
+                                    'Total sum: $' + order.Total_Amount__c + 
+                                '</span>' + 
+                            '</span>' + 
+                        '</div>');
         mailList.add(mail);
 
 
