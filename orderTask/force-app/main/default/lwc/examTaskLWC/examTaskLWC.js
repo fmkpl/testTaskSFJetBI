@@ -56,6 +56,7 @@ export default class ExamTaskLWC extends LightningElement {
     }
 
     handleChange(event) {
+        this.valueMonth = '';
         this.accountName = event.detail.value;
     }
 

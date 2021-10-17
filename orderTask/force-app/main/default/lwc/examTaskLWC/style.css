@@ -1,22 +1,3 @@
-.order-container {
-    background: white !important;
-    border: 1px solid black !important;
-}
-
-lightning-card {
-    padding: 20px;
-    margin: 20px;
-}
-
-h1 {
-    font-weight: 500;
-    font-size: 19px;
-}
-
-.accountNameStyle {
-    color: blue;
-}
-
-.monthNameStyle {
-    color: green;
+#main {
+    font-size: x-large;
 }
