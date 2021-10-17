@@ -147,22 +147,31 @@ public with sharing class ExamTaskControllerTest {
 
         Order__c order = [select Id, Name, Total_Amount__c, Account__r.Name, Payment_Due_date__c from Order__c where Total_Amount__c = 46500][0];
 
+        EmailTemplate emailTemp = [select Id, 
+                                          Subject, 
+                                          HtmlValue, 
+                                          Body, 
+                                          Name from EmailTemplate where Name = 'Order Info (Exam Task)'];
+
+        String plainText = emailTemp.HtmlValue;
+
+        plainText = plainText.replace('{{{Order__c.Name}}}', order.Name);
+        plainText = plainText.replace('{{{Order__c.Account__c}}}', order.Account__r.Name);
+        plainText = plainText.replace('{{{Order__c.Payment_Due_date__c}}}', order.Payment_Due_date__c.format());
+        plainText = plainText.replace('{{{Order__c.Total_Amount__c}}}', String.valueOf(order.Total_Amount__c));
+
         String[] toAddresses = new String[]{'testemail@example.com'};
 
         toAddresses[0] = UserInfo.getUserEmail();
 
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setSubject('Order information'); // without template
+        mail.setSubject(emailTemp.Subject); // without template
         mail.setToAddresses(toAddresses);
-        mail.setHtmlBody('<div style="text-align: center;"><img alt="JetBI_RED_2018" src="https://mindful-raccoon-838otp-dev-ed--c.documentforce.com/file-asset-public/JetBI_RED_2018?oid=00D5g000004h8qc" style="max-width: 385.308px; width: 234.3px; height: 92px;" title="JetBI_RED_2018" /><br />&nbsp;</div>' + 
-        '<div style="text-align: center;"><span style="font-size:18px;"><span style="font-family:Franklin Gothic,Arial,Helvetica,sans-serif;">---Order information---<br /><br />' + 
-        'Account: ' + order.Account__r.Name + '<br />' +
-        'Payment Due Date: ' + order.Payment_Due_date__c + '<br />' +
-        'Total sum: $' + order.Total_Amount__c + '</span></span></div>');
+        mail.setHtmlBody(plainText);
         mailList.add(mail);
 
         Test.startTest();
-        ExamTaskController.sendEmailWithoutTemplate(order.Id);
+        ExamTaskController.sendEmailWithTemplate(order.Id);
         Test.stopTest();
 
         System.assert(!mailList.isEmpty(), 'Email not sent');

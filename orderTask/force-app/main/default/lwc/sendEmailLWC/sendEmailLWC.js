@@ -1,11 +1,11 @@
 import { LightningElement, api } from 'lwc';
-import sendEmailWithoutTemplate from "@salesforce/apex/ExamTaskController.sendEmailWithoutTemplate";
+import sendEmailWithTemplate from "@salesforce/apex/ExamTaskController.sendEmailWithTemplate";
 
 export default class SendEmailLWC extends LightningElement {
     @api recordId;
 
     sendEmailFunc() {
-        sendEmailWithoutTemplate({ recordId: this.recordId });
+        sendEmailWithTemplate({ recordId: this.recordId });
         alert('Email sent.');
     }
 }

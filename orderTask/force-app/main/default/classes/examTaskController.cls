@@ -128,44 +128,37 @@ public with sharing class ExamTaskController {
     }
 
     @AuraEnabled
-    public static void sendEmailWithoutTemplate(String recordId) {
+    public static void sendEmailWithTemplate(String recordId) {
         List<Messaging.SingleEmailMessage> mailList = new List<Messaging.SingleEmailMessage>();
 
-        //EmailTemplate emailTemp = [select Id, Subject, Body, Name from EmailTemplate where Name = 'Order Info (Exam Task)'];
+        EmailTemplate emailTemp = [select Id, 
+                                          Subject, 
+                                          HtmlValue, 
+                                          Body, 
+                                          Name from EmailTemplate where Name = 'Order Info (Exam Task)'];
 
-        Order__c order = [select Id, 
+        String plainText = emailTemp.HtmlValue;
+
+        Order__c order = [select Id,
+                                Name,
                                 Account__r.Name,
                                 Total_Amount__c,
                                 Payment_Due_date__c from Order__c where Id = :recordId];
 
-        String[] toAddresses = new String[]{'testemail@example.com'};
+        plainText = plainText.replace('{{{Order__c.Name}}}', order.Name);
+        plainText = plainText.replace('{{{Order__c.Account__c}}}', order.Account__r.Name);
+        plainText = plainText.replace('{{{Order__c.Payment_Due_date__c}}}', order.Payment_Due_date__c.format());
+        plainText = plainText.replace('{{{Order__c.Total_Amount__c}}}', String.valueOf(order.Total_Amount__c));
 
+        String[] toAddresses = new String[]{'someemailadress@example.com'};
         toAddresses[0] = UserInfo.getUserEmail();
 
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setSubject('Order information'); // without template
+
+        mail.setSubject(emailTemp.Subject);
         mail.setToAddresses(toAddresses);
-        mail.setHtmlBody('<div style="text-align: center;">' +
-                            '<img alt="JetBI_RED_2018" src="https://mindful-raccoon-838otp-dev-ed--c.documentforce.com/file-asset-public/JetBI_RED_2018?oid=00D5g000004h8qc" style="max-width: 385.308px; width: 234.3px; height: 92px;" title="JetBI_RED_2018" />' + 
-                            '<br />&nbsp;' + 
-                        '</div>' + 
-                        '<div style="text-align: center;">' + 
-                            '<span style="font-size:18px;">' + 
-                                '<span style="font-family:Franklin Gothic,Arial,Helvetica,sans-serif;">' + 
-                                    '---Order information---<br /><br />' + 
-                                    'Account: ' + order.Account__r.Name + '<br />' +
-                                    'Payment Due Date: ' + order.Payment_Due_date__c + '<br />' +
-                                    'Total sum: $' + order.Total_Amount__c + 
-                                '</span>' + 
-                            '</span>' + 
-                        '</div>');
+        mail.setHtmlBody(plainText);
         mailList.add(mail);
-
-
-        //mail.setSaveAsActivity(false);    // with template
-        //mail.setTemplateId(emailTemp.Id);
-        //mail.setTargetObjectId(user.Id);
-        //mailList.add(mail);
 
         if(!mailList.isEmpty()) {
             Messaging.sendEmail(mailList);
