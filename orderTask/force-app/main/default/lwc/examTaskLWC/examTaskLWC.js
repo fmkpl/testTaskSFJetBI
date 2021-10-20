@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import getAllAccountNamesWithOrders from '@salesforce/apex/ExamTaskController.getAllAccountNamesWithOrders';
 import getAllMonthsOfPaymentDueDate from '@salesforce/apex/ExamTaskController.getAllMonthsOfPaymentDueDate';
 import getOrders from '@salesforce/apex/ExamTaskController.getOrders';
@@ -9,15 +9,16 @@ export default class ExamTaskLWC extends LightningElement {
     accountName = '';
     valueMonth = '';
 
-    @track errorAccNames;
-    @track accNames = [];
+    errorAccNames;
+    accNames = [];
 
-    @track errorMonthsNames;
-    @track monthNames = [];
+    errorMonthsNames;
+    monthNames = [];
 
-    @track orders = [];
-    @track errorOrders;
-    @track columns = [
+    orders = [];
+    errorOrders;
+
+    columns = [
         {
             label: 'Order name',
             fieldName: 'nameUrl',

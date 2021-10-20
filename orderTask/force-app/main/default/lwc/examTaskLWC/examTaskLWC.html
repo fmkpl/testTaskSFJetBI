@@ -7,18 +7,14 @@
         <div id="main" class="slds-p-horizontal_medium">
             <lightning-combobox 
                 placeholder="Select Account name"
-                name="accName"
                 label="Account Name"
-                value={valueName}
                 options={accountNamesOptions}
                 onchange={handleChange}>
             </lightning-combobox>
 
             <lightning-combobox
                 placeholder="Select month of Payment Due date"
-                name="monthName"
                 label="Month of Payment Due Date"
-                value={valueMonth}
                 options={monthNamesOptions}
                 onchange={handleChangeMonth}>
             </lightning-combobox>
@@ -28,7 +24,8 @@
             <lightning-datatable data={orders}
                 columns={columns}
                 key-field="Id"
-                hide-checkbox-column="true">
+                resize-column-disabled
+                hide-checkbox-column>
             </lightning-datatable>
         </div>
     </lightning-card>

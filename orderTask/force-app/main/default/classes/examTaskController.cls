@@ -144,16 +144,16 @@ public with sharing class ExamTaskController {
 
         String plainText = emailTemp.HtmlValue;
 
-        Order__c order = [select Id,
+        Order__c currentOrder = [select Id,
                                 Name,
                                 Account__r.Name,
                                 Total_Amount__c,
                                 Payment_Due_date__c from Order__c where Id = :recordId];
 
-        plainText = plainText.replace('{{{Order__c.Name}}}', order.Name);
-        plainText = plainText.replace('{{{Order__c.Account__c}}}', order.Account__r.Name);
-        plainText = plainText.replace('{{{Order__c.Payment_Due_date__c}}}', order.Payment_Due_date__c.format());
-        plainText = plainText.replace('{{{Order__c.Total_Amount__c}}}', String.valueOf(order.Total_Amount__c));
+        plainText = plainText.replace('{{{Order__c.Name}}}', currentOrder.Name);
+        plainText = plainText.replace('{{{Order__c.Account__c}}}', currentOrder.Account__r.Name);
+        plainText = plainText.replace('{{{Order__c.Payment_Due_date__c}}}', currentOrder.Payment_Due_date__c.format());
+        plainText = plainText.replace('{{{Order__c.Total_Amount__c}}}', String.valueOf(currentOrder.Total_Amount__c));
 
         String[] toAddresses = new String[]{'someemailadress@example.com'};
         toAddresses[0] = UserInfo.getUserEmail();
