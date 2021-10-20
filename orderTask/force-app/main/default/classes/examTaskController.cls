@@ -115,7 +115,11 @@ public with sharing class ExamTaskController {
 
             List<Order__c> ordersList = new List<Order__c>();
 
-            for(Order__c ord : [select Id, Name, Payment_Due_date__c, Total_Amount__c, Account__c from Order__c where Account__r.Name = :accountName]) {
+            for(Order__c ord : [select Id,
+                                       Name,
+                                       Payment_Due_date__c, 
+                                       Total_Amount__c, 
+                                       Account__c from Order__c where Account__r.Name = :accountName order by Name asc nulls last]) {
                 if(ord.Payment_Due_date__c.month() == checkMonth) {
                     ordersList.add(ord);
                 }
@@ -127,6 +131,7 @@ public with sharing class ExamTaskController {
         }
     }
 
+    @future
     @AuraEnabled
     public static void sendEmailWithTemplate(String recordId) {
         List<Messaging.SingleEmailMessage> mailList = new List<Messaging.SingleEmailMessage>();
