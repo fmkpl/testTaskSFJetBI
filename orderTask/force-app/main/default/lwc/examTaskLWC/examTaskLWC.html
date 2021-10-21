@@ -2,14 +2,14 @@
     <lightning-card variant="narrow"
                     icon-name="standard:orders">
 
-        <h1 slot="title">List of Orders</h1>
+        <h1 slot="title">Order Automation Card</h1>
 
-        <div id="main" class="slds-p-horizontal_medium">
+        <div class="slds-p-horizontal_medium">
             <lightning-combobox 
                 placeholder="Select Account name"
                 label="Account Name:"
                 options={accountNamesOptions}
-                onchange={handleChange}>
+                onchange={handleChangeAccName}>
             </lightning-combobox>
 
             <lightning-combobox
@@ -20,13 +20,22 @@
             </lightning-combobox>
         </div>
 
-        <div slot="footer">
-            <lightning-datatable data={orders}
-                columns={columns}
-                key-field="Id"
-                resize-column-disabled
-                hide-checkbox-column>
-            </lightning-datatable>
+        <div>
+            <div class={classToShowAccName}>
+                <p>Table of orders for "{accountName}"</p>
+            </div>
+            <div class={classToShowMonthName}>
+                <p> in {valueMonth}</p>
+            </div>
+            <div class={classToShowTable}>
+                <lightning-datatable data={orders}
+                    columns={columns}
+                    key-field="Id"
+                    resize-column-disabled
+                    hide-checkbox-column
+                    show-row-number-column>
+                </lightning-datatable>
+            </div>
         </div>
     </lightning-card>
 </template>

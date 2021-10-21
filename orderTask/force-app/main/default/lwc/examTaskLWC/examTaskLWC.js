@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import getAllAccountNamesWithOrders from '@salesforce/apex/ExamTaskController.getAllAccountNamesWithOrders';
 import getAllMonthsOfPaymentDueDate from '@salesforce/apex/ExamTaskController.getAllMonthsOfPaymentDueDate';
 import getOrders from '@salesforce/apex/ExamTaskController.getOrders';
@@ -6,8 +6,8 @@ let i = 0;
 
 export default class ExamTaskLWC extends LightningElement {
     //VARIABLES
-    accountName = '';
-    valueMonth = '';
+    @track accountName = '';
+    @track valueMonth = '';
 
     errorAccNames;
     accNames = [];
@@ -56,8 +56,9 @@ export default class ExamTaskLWC extends LightningElement {
         }
     }
 
-    handleChange(event) {
+    handleChangeAccName(event) {
         this.accountName = event.detail.value;
+        this.valueMonth = '';
     }
 
     //GET MONTHS FROM ORDERS RELATED TO ACCOUNTS
@@ -99,5 +100,18 @@ export default class ExamTaskLWC extends LightningElement {
             this.errorOrders = error;
             this.orders = [];
         }
+    }
+
+    //STYLE WORK
+    get classToShowAccName() {
+        return this.accountName != '' ? 'showAccName' : 'hideAccName';
+    }
+
+    get classToShowMonthName() {
+        return this.valueMonth != '' ? 'showMonthName' : 'hideMonthName'; 
+    }
+
+    get classToShowTable() {
+        return (this.valueMonth != '' & this.accountName != '') ? 'showTable' : 'hideTable';
     }
 }

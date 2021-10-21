@@ -1,0 +1,52 @@
+.hideAccName {
+    display: none;
+}
+
+.showAccName {
+    opacity: 0;
+    animation: san 2.5s forwards;
+}
+
+@keyframes san {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+.hideMonthName {
+    display: none;
+}
+
+.showMonthName {
+    opacity: 0;
+    animation: smn 2.5s forwards;
+}
+
+@keyframes smn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+.hideTable {
+    display: none;
+}
+
+.showTable {
+    opacity: 0;
+    animation: ani 2.5s forwards;
+}
+
+@keyframes ani {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+p {
+    font-weight: bold;
+    font-size: 16px; 
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}

@@ -1,0 +1,20 @@
+.emailStatus {
+    opacity: 0;
+    display: block;
+    color: green;
+    font-weight: bold;
+    animation: es 5s forwards;
+}
+
+.hideEmailStatus {
+    opacity: 0;
+}
+
+@keyframes es {
+    0% {opacity: 0;}
+    20% {opacity: 1;}
+    40% {opacity: 1;}
+    60% {opacity: 1;}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
