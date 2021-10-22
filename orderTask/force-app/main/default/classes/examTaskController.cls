@@ -3,67 +3,92 @@ public with sharing class ExamTaskController {
     public static List<String> getAllAccountNamesWithOrders() {
         Set<String> accountNamesSet = new Set<String>();
 
-        for(Order__c ord : [select Name, Account__r.Name from Order__c where Account__c != null]) {
-            accountNamesSet.add(ord.Account__r.Name);
+        DescribeSObjectResult d = Order__c.SObjectType.getDescribe();
+
+        List<String> fields = new List<String>(d.fields.getMap().keySet());
+
+        String soql = 'select ' + String.join(fields, ', ') + ' from Order__c where Account__c != null';
+
+        List<SObject> sobs = Database.query(soql);
+        for (SObject ord : sobs) {
+            accountNamesSet.add((String)ord.get(Order__c.Account__c));
         }
 
-        List<String> accountNames = new List<String>(accountNamesSet);
-        return accountNames; 
+        List<String> accountNames = new List<String>();
+        for (Account acc : [select Id, Name from Account where Id in :accountNamesSet]) {
+            accountNames.add(acc.Name);
+        }
+
+        return accountNames;
     }
 
     @AuraEnabled(cacheable=true)
     public static List<String> getAllMonthsOfPaymentDueDate(String accountName) {
         try {
-            Set<Integer> orderMonthsSet = new Set<Integer>();
+            List<Date> orderMonthsSet = new List<Date>();
 
-            for(Order__c ord : [select Payment_Due_date__c from Order__c where Account__r.Name = :accountName]) {
-                orderMonthsSet.add(ord.Payment_Due_date__c.month());
+            DescribeSObjectResult d = Order__c.SObjectType.getDescribe();
+
+            List<String> fields = new List<String>(d.fields.getMap().keySet());
+
+            String soql = 'select ' + String.join(fields, ', ') + ' from Order__c where Account__r.Name = :accountName';
+
+            List<SObject> sobs = Database.query(soql);
+            for(SObject ord : sobs) {
+                orderMonthsSet.add((Date)ord.get(Order__c.Payment_Due_date__c));
             }
+            System.debug(orderMonthsSet);
 
-            List<String> orderMonths = new List<String>();
+            Set<Integer> monthNums = new Set<Integer>();
+            for(Date item : orderMonthsSet) {
+                monthNums.add(item.month());
+            }
+            System.debug(monthNums);
 
-            for(Integer i : orderMonthsSet) {
+            List<String> monthNames = new List<String>();
+            for(Integer i : monthNums) {
                 switch on i {
                     when 1 {
-                        orderMonths.add('January');
+                        monthNames.add('January');
                     } 
                     when 2 {
-                        orderMonths.add('February');
+                        monthNames.add('February');
                     }
                     when 3 {
-                        orderMonths.add('March');
+                        monthNames.add('March');
                     } 
                     when 4 {
-                        orderMonths.add('April');
+                        monthNames.add('April');
                     }
                     when 5 {
-                        orderMonths.add('May');
+                        monthNames.add('May');
                     }
                     when 6 {
-                        orderMonths.add('June');
+                        monthNames.add('June');
                     }
                     when 7 {
-                        orderMonths.add('July');
+                        monthNames.add('July');
                     }
                     when 8 {
-                        orderMonths.add('August');
+                        monthNames.add('August');
                     }
                     when 9 {
-                        orderMonths.add('September');
+                        monthNames.add('September');
                     }
                     when 10 {
-                        orderMonths.add('October');
+                        monthNames.add('October');
                     }
                     when 11 {
-                        orderMonths.add('November');
+                        monthNames.add('November');
                     }
                     when 12 {
-                        orderMonths.add('December');
+                        monthNames.add('December');
                     }
                 }
             }
+            System.debug(monthNames);
             
-            return orderMonths;
+            return monthNames;
         } catch(Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
@@ -73,11 +98,11 @@ public with sharing class ExamTaskController {
     public static List<Order__c> getOrders(String accountName, String valueMonth) {
         try {
             Integer checkMonth = 0;
-            
+
             switch on valueMonth {
-                when 'January' {
+                when 'January' { 
                     checkMonth = 1;
-                }
+	            }
                 when 'February' {
                     checkMonth = 2;
                 }
@@ -113,19 +138,27 @@ public with sharing class ExamTaskController {
                 }
             }
 
-            List<Order__c> ordersList = new List<Order__c>();
+            Account acc = [select Id from Account where Name = :accountName];
+            Id accId = acc.Id;
 
-            for(Order__c ord : [select Id,
-                                       Name,
-                                       Payment_Due_date__c, 
-                                       Total_Amount__c, 
-                                       Account__c from Order__c where Account__r.Name = :accountName order by Name asc nulls last]) {
-                if(ord.Payment_Due_date__c.month() == checkMonth) {
-                    ordersList.add(ord);
+            DescribeSObjectResult d = Order__c.SObjectType.getDescribe();
+
+            List<String> fields = new List<String>(d.fields.getMap().keySet());
+
+            String soql = 'select ' + String.join(fields, ', ') + ' from Order__c where Account__c = :accId';
+            System.debug(soql);
+
+            List<Order__c> ordList = new List<Order__c>();
+
+            for (Order__c order : Database.query(soql)) {
+                if(order.Payment_Due_date__c.month() == checkMonth) {
+                    ordList.add(order);
                 }
             }
 
-            return ordersList; 
+            System.debug(ordList.size());
+
+            return ordList;
         } catch(Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
