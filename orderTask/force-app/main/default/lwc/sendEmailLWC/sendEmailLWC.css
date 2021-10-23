@@ -1,5 +1,6 @@
 .emailStatus {
     opacity: 0;
+    margin-left: 5px;
     display: block;
     color: green;
     font-weight: bold;
@@ -8,6 +9,7 @@
 
 .hideEmailStatus {
     opacity: 0;
+    margin-left: 5px;
 }
 
 @keyframes es {
@@ -17,4 +19,10 @@
     60% {opacity: 1;}
     80% {opacity: 1;}
     100% {opacity: 0;}
+}
+
+.container {
+    display: inline-flex;
+    align-content: center;
+    align-items: center;   
 }

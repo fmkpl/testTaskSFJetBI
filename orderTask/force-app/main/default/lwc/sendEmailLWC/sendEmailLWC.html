@@ -1,6 +1,8 @@
 <template>
-    <lightning-button label="Send Order"
-                    variant="brand"
-                    onclick={sendEmailFunc}></lightning-button>
-    <div class={emailSentStatus}>✔ Email sent successfully!</div>
+    <div class="container">
+        <lightning-button label="Send Order"
+                        variant="brand"
+                        onclick={sendEmailFunc}></lightning-button>
+        <p class={emailSentStatus}>✔ Email sent successfully!</p>
+    </div>
 </template>
