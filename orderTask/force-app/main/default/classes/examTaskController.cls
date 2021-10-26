@@ -1,7 +1,7 @@
 public with sharing class ExamTaskController {
     @AuraEnabled(cacheable=true)
-    public static List<String> getAllAccountNamesWithOrders() {
-        Set<String> accountNamesSet = new Set<String>();
+    public static Map<Integer, String> getAllAccountNamesWithOrders() {
+        /*Set<String> accountNamesSet = new Set<String>();
 
         DescribeSObjectResult d = Order__c.SObjectType.getDescribe();
 
@@ -19,7 +19,25 @@ public with sharing class ExamTaskController {
             accountNames.add(acc.Name);
         }
 
-        return accountNames;
+        return accountNames;*/
+
+        Set<String> ordSet = new Set<String>();
+
+        for(Order__c order : [select Account__r.Name from Order__c where Account__c != null]) {
+            ordSet.add(order.Account__r.Name);
+        }
+
+        List<String> ordList = new List<String>(ordSet);
+
+        Map<Integer, String> mapAccNames = new Map<Integer, String>();
+
+        for(Integer i = 0; i < ordList.size(); i++) {
+            mapAccNames.put(i+1, ordList[i]);
+        }
+
+        System.debug(mapAccNames);
+
+        return mapAccNames;
     }
 
     @AuraEnabled(cacheable=true)

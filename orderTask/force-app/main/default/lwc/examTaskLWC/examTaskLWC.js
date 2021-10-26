@@ -45,9 +45,12 @@ export default class ExamTaskLWC extends LightningElement {
     @wire(getAllAccountNamesWithOrders)
     wiredNames({error, data}) {
         if(data) {
-            this.accNames = [];
+            /*this.accNames = [];
             for(i = 0; i < data.length; i++) {
-                this.accNames = [...this.accNames, {value: data[i], label: data[i]}]; 
+                this.accNames = [...this.accNames, {value: data[i], label: data[i]}];
+            }*/
+            for(let key in data) {
+                this.accNames = [...this.accNames, {value:data[key], label:data[key]}];
             }
             error = undefined;
         } else if(error) {
